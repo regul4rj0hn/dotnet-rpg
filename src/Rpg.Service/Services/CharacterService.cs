@@ -4,6 +4,7 @@ namespace Rpg.Service.Services
     using Rpg.Core.Models;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     public class CharacterService : ICharacterService
     {        
@@ -12,17 +13,17 @@ namespace Rpg.Service.Services
             new Character { Id= 1, Name = "Sam"}
         };
 
-        public int AddCharacter(Character newCharacter)
+        public async Task<int> AddCharacter(Character newCharacter)
         {
             characters.Add(newCharacter);
             return newCharacter.Id;
         }
-        public IList<Character> GetAllCharacters()
+        public async Task<IList<Character>> GetAllCharacters()
         {
             return characters;
         }
 
-        public Character GetCharacterById(int id)
+        public async Task<Character> GetCharacterById(int id)
         {
             return characters.FirstOrDefault(c => c.Id == id);
         }

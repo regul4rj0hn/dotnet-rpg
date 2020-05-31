@@ -3,6 +3,7 @@ namespace Rpg.Api.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Rpg.Core.Models;
     using Rpg.Core.Interfaces;
+    using System.Threading.Tasks;
 
     [ApiController]
     [Route("[controller]")]
@@ -16,22 +17,22 @@ namespace Rpg.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(Character toon)
+        public async Task<IActionResult> Add(Character toon)
         {
             
-            return Ok(_characterService.AddCharacter(toon));
+            return Ok(await _characterService.AddCharacter(toon));
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(_characterService.GetAllCharacters());
+            return Ok(await _characterService.GetAllCharacters());
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetSingle(int id)
+        public async Task<IActionResult> GetSingle(int id)
         {
-            return Ok(_characterService.GetCharacterById(id));
+            return Ok(await _characterService.GetCharacterById(id));
         }
     }
 }
