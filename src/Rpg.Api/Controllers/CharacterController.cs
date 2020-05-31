@@ -19,8 +19,14 @@ namespace Rpg.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddCharacterDto toon)
         {
-            
-            return Ok(await _characterService.AddCharacter(toon));
+            var response = await _characterService.AddCharacter(toon);
+
+            if (response.Data == null)
+            {
+                return BadRequest(response);
+            }
+
+            return CreatedAtAction(nameof(GetById), new { id = response.Data.Id }, response);
         }
 
         [HttpGet]
@@ -30,9 +36,29 @@ namespace Rpg.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSingle(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            return Ok(await _characterService.GetCharacterById(id));
+            var response = await _characterService.GetCharacterById(id);
+
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCharacter(int id, UpdateCharacterDto toon)
+        {
+            var response = await _characterService.UpdateCharacter(id, toon);
+
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+
+            return NoContent();
         }
     }
 }

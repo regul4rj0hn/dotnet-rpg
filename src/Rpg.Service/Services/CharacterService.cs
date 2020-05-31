@@ -4,6 +4,7 @@ namespace Rpg.Service.Services
     using Rpg.Core.Dtos.Character;
     using Rpg.Core.Interfaces;
     using Rpg.Core.Models;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -47,6 +48,38 @@ namespace Rpg.Service.Services
             var response = new ServiceResponse<GetCharacterDto>();
 
             response.Data = _mapper.Map<GetCharacterDto>(characters.FirstOrDefault(c => c.Id == id));
+
+            if (response.Data == null) 
+            {
+                response.Success = false;
+                response.Message = "Character not found.";
+            }
+
+            return response;
+        }
+
+        public async Task<ServiceResponse<GetCharacterDto>> UpdateCharacter(int id, UpdateCharacterDto updatedCharacter)
+        {
+            var response = new ServiceResponse<GetCharacterDto>();
+
+            try
+            {
+                var character = characters.FirstOrDefault(c => c.Id == id);
+
+                character.Name = updatedCharacter.Name;
+                character.Class = updatedCharacter.Class;
+                character.Defense = updatedCharacter.Defense;
+                character.HitPoints = updatedCharacter.HitPoints;
+                character.Intelligence = updatedCharacter.Intelligence;
+                character.Strength = updatedCharacter.Strength;
+
+                response.Data = _mapper.Map<GetCharacterDto>(character);
+            }
+            catch (Exception e)
+            {
+                response.Success = false;
+                response.Message = e.Message;
+            }
 
             return response;
         }
