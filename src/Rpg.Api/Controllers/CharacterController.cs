@@ -1,7 +1,7 @@
 namespace Rpg.Api.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using Rpg.Core.Models;
+    using Rpg.Core.Dtos.Character;
     using Rpg.Core.Interfaces;
     using System.Threading.Tasks;
 
@@ -17,7 +17,7 @@ namespace Rpg.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Character toon)
+        public async Task<IActionResult> Add(AddCharacterDto toon)
         {
             
             return Ok(await _characterService.AddCharacter(toon));

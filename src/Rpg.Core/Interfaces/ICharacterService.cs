@@ -1,13 +1,14 @@
 namespace Rpg.Core.Interfaces
 {
     using Rpg.Core.Models;
+    using Rpg.Core.Dtos.Character;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public interface ICharacterService
     {
-        Task<int> AddCharacter(Character newCharacter);
-        Task<IList<Character>> GetAllCharacters();
-        Task<Character> GetCharacterById(int id);
+        Task<ServiceResponse<GetCharacterDto>> AddCharacter(AddCharacterDto newCharacter);
+        Task<ServiceResponse<IList<GetCharacterDto>>> GetAllCharacters();
+        Task<ServiceResponse<GetCharacterDto>> GetCharacterById(int id);
     }
 }
