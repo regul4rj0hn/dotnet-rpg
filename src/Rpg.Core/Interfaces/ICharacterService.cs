@@ -11,5 +11,6 @@ namespace Rpg.Core.Interfaces
         Task<ServiceResponse<IList<GetCharacterDto>>> GetAllCharacters();
         Task<ServiceResponse<GetCharacterDto>> GetCharacterById(int id);
         Task<ServiceResponse<GetCharacterDto>> UpdateCharacter(int id, UpdateCharacterDto updatedCharacter);
+        Task<ServiceResponse<GetCharacterDto>> DeleteCharacter(int id);
     }
 }

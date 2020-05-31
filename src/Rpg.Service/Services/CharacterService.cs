@@ -83,5 +83,25 @@ namespace Rpg.Service.Services
 
             return response;
         }
+
+        public async Task<ServiceResponse<GetCharacterDto>> DeleteCharacter(int id)
+        {
+            var response = new ServiceResponse<GetCharacterDto>();
+
+            try
+            {
+                var character = characters.First(c => c.Id == id);
+                response.Data = (characters.Select(c => _mapper.Map<GetCharacterDto>(c))).FirstOrDefault(c => c.Id == id);
+                response.Message = "Your character was successufully deleted.";
+                characters.Remove(character);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
     }
 }
