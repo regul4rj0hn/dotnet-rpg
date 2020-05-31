@@ -1,4 +1,4 @@
-namespace Rpg.Models.Enums
+namespace Rpg.Core.Enums
 {
     public enum RpgClass
     {

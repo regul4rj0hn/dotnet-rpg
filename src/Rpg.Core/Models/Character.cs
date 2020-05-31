@@ -1,5 +1,6 @@
-namespace Rpg.Models.Models {
-    using Rpg.Models.Enums;
+namespace Rpg.Core.Models {
+    using Rpg.Core.Enums;
+
     public class Character {
         public int Id { get; set; }
         public string Name { get; set; } = "Frodo";

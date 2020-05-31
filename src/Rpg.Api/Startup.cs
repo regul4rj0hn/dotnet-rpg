@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
 namespace Rpg.Api
 {
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -19,6 +19,7 @@ namespace Rpg.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            Rpg.Service.Configure.AddServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
