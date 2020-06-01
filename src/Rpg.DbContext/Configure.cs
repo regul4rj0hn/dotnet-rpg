@@ -8,7 +8,7 @@ namespace Rpg.DbContext
     {
         public static void AddDataAccessServices(this IServiceCollection services, string connectionString)
         {
-            services.AddDbContext<RpgContext>(options => options.UseSqlServer(connectionString, x => x.MigrationsAssembly("Rpg.Api")));
+            services.AddDbContext<RpgContext>(options => options.UseSqlServer(connectionString, x => x.MigrationsAssembly("Rpg.DbContext")));
         }
     }
 }

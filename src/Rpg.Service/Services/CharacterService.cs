@@ -31,10 +31,10 @@ namespace Rpg.Service.Services
             var character = _mapper.Map<Character>(newCharacter);
 
             await _context.Character.AddAsync(character);
-            var newId = await _context.SaveChangesAsync();
-            var newChar = _context.Character.FirstOrDefault(c => c.Id == newId);
+            await _context.SaveChangesAsync();
 
-            response.Data = _mapper.Map<GetCharacterDto>(newChar);
+            var inserted = await _context.Character.FirstOrDefaultAsync(c => c.Id == character.Id);
+            response.Data = _mapper.Map<GetCharacterDto>(inserted);
 
             return response;
         }
