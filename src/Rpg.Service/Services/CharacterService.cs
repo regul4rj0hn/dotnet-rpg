@@ -1,6 +1,7 @@
 namespace Rpg.Service.Services
 {
     using AutoMapper;
+    using Microsoft.EntityFrameworkCore;
     using Rpg.Core.Dtos.Character;
     using Rpg.Core.Interfaces;
     using Rpg.Core.Models;
@@ -12,12 +13,7 @@ namespace Rpg.Service.Services
     using System.Threading.Tasks;
 
     public class CharacterService : ICharacterService
-    {        
-        private static IList<Character> characters = new List<Character> {
-            new Character(),
-            new Character { Id= 1, Name = "Sam"}
-        };
-
+    {
         private readonly RpgContext _context;
         private readonly IMapper _mapper;
 
@@ -34,17 +30,21 @@ namespace Rpg.Service.Services
             var response = new ServiceResponse<GetCharacterDto>();
             var character = _mapper.Map<Character>(newCharacter);
 
-            character.Id = characters.Max(c => c.Id) + 1;
-            characters.Add(character);
-            response.Data = (characters.Select(c => _mapper.Map<GetCharacterDto>(c))).FirstOrDefault(c => c.Name == newCharacter.Name);
+            await _context.Character.AddAsync(character);
+            var newId = await _context.SaveChangesAsync();
+            var newChar = _context.Character.FirstOrDefault(c => c.Id == newId);
+
+            response.Data = _mapper.Map<GetCharacterDto>(newChar);
 
             return response;
         }
+
         public async Task<ServiceResponse<IList<GetCharacterDto>>> GetAllCharacters()
         {
             var response = new ServiceResponse<IList<GetCharacterDto>>();
 
-            response.Data = (characters.Select(c => _mapper.Map<GetCharacterDto>(c))).ToList();
+            var characters = await _context.Character.ToListAsync();
+            response.Data = characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
 
             return response;
         }
@@ -53,7 +53,8 @@ namespace Rpg.Service.Services
         {
             var response = new ServiceResponse<GetCharacterDto>();
 
-            response.Data = _mapper.Map<GetCharacterDto>(characters.FirstOrDefault(c => c.Id == id));
+            var toon = await _context.Character.FirstOrDefaultAsync(c => c.Id == id);
+            response.Data = _mapper.Map<GetCharacterDto>(toon);
 
             if (response.Data == null) 
             {
@@ -70,7 +71,7 @@ namespace Rpg.Service.Services
 
             try
             {
-                var character = characters.FirstOrDefault(c => c.Id == id);
+                var character = _context.Character.FirstOrDefault(c => c.Id == id);
 
                 character.Name = updatedCharacter.Name;
                 character.Class = updatedCharacter.Class;
@@ -78,6 +79,9 @@ namespace Rpg.Service.Services
                 character.HitPoints = updatedCharacter.HitPoints;
                 character.Intelligence = updatedCharacter.Intelligence;
                 character.Strength = updatedCharacter.Strength;
+
+                _context.Character.Update(character);
+                await _context.SaveChangesAsync();
 
                 response.Data = _mapper.Map<GetCharacterDto>(character);
             }
@@ -96,10 +100,13 @@ namespace Rpg.Service.Services
 
             try
             {
-                var character = characters.First(c => c.Id == id);
-                response.Data = (characters.Select(c => _mapper.Map<GetCharacterDto>(c))).FirstOrDefault(c => c.Id == id);
+                var character = await _context.Character.FirstOrDefaultAsync(c => c.Id == id);
+
+                response.Data = _mapper.Map<GetCharacterDto>(character);
                 response.Message = "Your character was successufully deleted.";
-                characters.Remove(character);
+
+                _context.Character.Remove(character);
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
