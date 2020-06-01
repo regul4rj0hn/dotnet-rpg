@@ -1,4 +1,4 @@
-namespace Rpg.Core.Models {
+namespace Rpg.DbContext.Models {
     using Rpg.Core.Enums;
 
     public class Character {

@@ -4,6 +4,8 @@ namespace Rpg.Service.Services
     using Rpg.Core.Dtos.Character;
     using Rpg.Core.Interfaces;
     using Rpg.Core.Models;
+    using Rpg.DbContext;
+    using Rpg.DbContext.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -16,10 +18,14 @@ namespace Rpg.Service.Services
             new Character { Id= 1, Name = "Sam"}
         };
 
+        private readonly RpgContext _context;
         private readonly IMapper _mapper;
 
-        public CharacterService(IMapper mapper)
+        public CharacterService(
+            RpgContext context,
+            IMapper mapper)
         {
+            _context = context;
             _mapper = mapper;
         }
 

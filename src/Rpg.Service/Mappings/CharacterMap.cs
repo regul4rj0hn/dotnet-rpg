@@ -2,7 +2,7 @@ namespace Rpg.Service.Mappings
 {
     using AutoMapper;
     using Rpg.Core.Dtos.Character;
-    using Rpg.Core.Models;
+    using Rpg.DbContext.Models;
 
     public class CharacterMap : Profile
     {

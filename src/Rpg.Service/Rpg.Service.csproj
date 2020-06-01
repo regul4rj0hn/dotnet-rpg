@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Rpg.Core\Rpg.Core.csproj" />
+    <ProjectReference Include="..\Rpg.DbContext\Rpg.DbContext.csproj" />
   </ItemGroup>
 
   <ItemGroup>
